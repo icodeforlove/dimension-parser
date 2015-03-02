@@ -1,4 +1,4 @@
-# dimension-parser[![Build Status](https://travis-ci.org/icodeforlove/dimension-parser.png?branch=master)](https://travis-ci.org/icodeforlove/dimension-parser)
+# dimension-parser [![Build Status](https://travis-ci.org/icodeforlove/dimension-parser.png?branch=master)](https://travis-ci.org/icodeforlove/dimension-parser)
 
 parse dimensions out of strings
 
