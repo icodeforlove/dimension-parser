@@ -1,0 +1,19 @@
+{
+  "name": "dimension-parser",
+  "version": "0.0.0",
+  "authors": [
+    "Chad Scira <chadvscira@gmail.com>"
+  ],
+  "main": "dist/saw.js",
+  "license": "MIT",
+  "ignore": [
+    "lib",
+    "node_modules",
+    "test",
+    "Gruntfile.js",
+    "index.js",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/icodeforlove/dimension-parser"
+}
