@@ -22,7 +22,12 @@ var entitiesMap = {
 	unitTypes = ['in', 'cm', 'mm', 'ft'],
 	matches = [
 		{
-			match: '([0-9\\.]+)(?:\\s*([0-9\\/]+|' + entitiesArray.join('|') + '))?\\s*x\\s*([0-9\\.]+)(?:\\s*([0-9\\/]+|' + entitiesArray.join('|') + '))?(?:\\s*x\\s*([0-9\\.]+)(?:\\s*([0-9\\/]+|' + entitiesArray.join('|') + '))?)?\\s*(' + unitTypes.join('|') + ')\\.?',
+			match: 
+				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
+				'\\s*x\\s*' + 
+				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'(?:\\s*x\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?',
 			props: ['width', 'width_remainder', 'height', 'height_remainder', 'length', 'length_remainder', 'type']
 		}
 	];
@@ -70,6 +75,8 @@ module.exports = function (string, unitType) {
 			break;
 		}
 	}
+
+	console.log(match);
 
 	if (match) {
 		if (match.width) {
