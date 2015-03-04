@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.1
+ * dimensionParser.js v0.0.2
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -125,8 +125,6 @@ var dimensionParser =
 				break;
 			}
 		}
-	
-		console.log(match);
 	
 		if (match) {
 			if (match.width) {

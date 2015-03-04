@@ -76,8 +76,6 @@ module.exports = function (string, unitType) {
 		}
 	}
 
-	console.log(match);
-
 	if (match) {
 		if (match.width) {
 			match.width = parseFloat(match.width);
