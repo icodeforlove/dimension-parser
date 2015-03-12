@@ -31,4 +31,14 @@ describe('General', function() {
 		expect(dimensionParser('171.5by141.5cm', 'in')).toEqual({ width : '67.52', height : '55.71' });
 		expect(dimensionParser('88.9 by 203.2 cm (35 by 80 in.) overall 177.8 by 203.2 cm (70 by 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });
 	});
+
+	it('can match named dimensions', function () {
+		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.) Profondeur : 85 cm (33  1/2  in.)', 'in')).toEqual({ width : '36.22', height : '79.92', length : '33.46' });
+		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.)', 'in')).toEqual({ width : '36.22', height : '79.92' });
+		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm Profondeur : 85 cm', 'in')).toEqual({ width : '36.22', height : '79.92', length : '33.46' });
+		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm', 'in')).toEqual({ width : '36.22', height : '79.92' });
+		expect(dimensionParser('Hauteur : (36  1/4  in.) Largeur : (80 in.)', 'in')).toEqual({ width : '36.25', height : '80.00' });
+		expect(dimensionParser('Hauteur : 70 cm Largeur : 49,5 cm Profondeur : 32,4 cm', 'in')).toEqual({ width : '27.56', height : '19.49' });
+		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '70.00', height : '49.50' });
+	});
 });

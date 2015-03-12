@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.2
+ * dimensionParser.js v0.0.4
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -72,8 +72,81 @@ var dimensionParser =
 		unitTypes = ['in', 'cm', 'mm', 'ft'],
 		matches = [
 			{
+				match:
+					// height
+					'(?:height|hauteur)\\s*:' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+	
+					// width
+					'(?:width|largeur)\\s*:' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+	
+					// length
+					'(?:length|depth|profondeur)\\s*:' +
+					'\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?',
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+			},
+	
+			{
+				match:
+					// height
+					'(?:height|hauteur)\\s*:' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+	
+					// width
+					'(?:width|largeur)\\s*:' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*',
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
+			},
+			{
+				match:
+					// height
+					'(?:height|hauteur)\\s*:[^\(]*' +
+					'\\(\s*' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?' +
+					'\\)[^\(]*' +
+	
+					// width
+					'(?:width|largeur)\\s*:[^\(]*' +
+					'\\(\s*' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?' +
+					'\\)[^\(]*' +
+	
+					// length
+					'(?:length|depth|profondeur)\\s*:[^\(]*' +
+					'\\(\s*' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?' +
+					'\\)\s*',
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+			},
+			{
+				match:
+					// height
+					'(?:height|hauteur)\\s*:[^\(]*' +
+					'\\(\s*' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?' +
+					'\\)[^\(]*' +
+	
+					// width
+					'(?:width|largeur)\\s*:[^\(]*' +
+					'\\(\s*' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?' +
+					'\\)',
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
+			},
+			{
 				match: 
-					'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
+					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
 					'\\s*(?:x|by)\\s*' + 
 					'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 					'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
@@ -117,6 +190,10 @@ var dimensionParser =
 		return parseEntity(string) || parseFraction(string);
 	}
 	
+	function replaceDecimals (string) {
+		return string.replace(/,/g, '.');
+	}
+	
 	module.exports = function (string, unitType) {
 		var match;
 	
@@ -128,15 +205,15 @@ var dimensionParser =
 	
 		if (match) {
 			if (match.width) {
-				match.width = parseFloat(match.width);
+				match.width = parseFloat(replaceDecimals(match.width));
 			}
 	
 			if (match.height) {
-				match.height = parseFloat(match.height);
+				match.height = parseFloat(replaceDecimals(match.height));
 			}
 	
 			if (match.length) {
-				match.length = parseFloat(match.length);
+				match.length = parseFloat(replaceDecimals(match.length));
 			}
 	
 			if (match.width_remainder) {
@@ -153,10 +230,12 @@ var dimensionParser =
 	
 			match.type = String(match.type).toLowerCase();
 	
-			match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
-			match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
-			if (match.length) {
-				match.length = new Qty(match.length + ' ' + match.type).to(unitType).scalar;
+			if (match.type !== unitType) {
+				match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
+				match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
+				if (match.length) {
+					match.length = new Qty(match.length + ' ' + match.type).to(unitType).scalar;
+				}
 			}
 		}
 	
@@ -2113,7 +2192,11 @@ var dimensionParser =
 		map: function (func) {
 			var saw = new Saw(this._context);
 	
-			saw._context = saw.toArray().map(func);
+			// Note: adds array as a third param
+			var array = saw.toArray();
+			saw._context = array.map(function (item, index) {
+				return func(item, index, array);
+			});
 	
 			return saw;
 		},
@@ -2121,7 +2204,11 @@ var dimensionParser =
 		filter: function (func) {
 			var saw = new Saw(this._context);
 	
-			saw._context = saw.toArray().filter(func);
+			// Note: adds array as a third param
+			var array = saw.toArray();
+			saw._context = array.filter(function (item, index) {
+				return func(item, index, array);
+			});
 	
 			return saw;
 		},
@@ -2205,7 +2292,9 @@ var dimensionParser =
 	
 			if (props.length === array.length) {
 				array.forEach(function (value, index) {
-					object[props[index]] = value;
+					if (typeof value !== 'undefined') {
+						object[props[index]] = value;
+					}
 				});
 			}
 	

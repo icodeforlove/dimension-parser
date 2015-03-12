@@ -22,8 +22,81 @@ var entitiesMap = {
 	unitTypes = ['in', 'cm', 'mm', 'ft'],
 	matches = [
 		{
+			match:
+				// height
+				'(?:height|hauteur)\\s*:' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+
+				// width
+				'(?:width|largeur)\\s*:' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+
+				// length
+				'(?:length|depth|profondeur)\\s*:' +
+				'\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?',
+			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+		},
+
+		{
+			match:
+				// height
+				'(?:height|hauteur)\\s*:' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+
+				// width
+				'(?:width|largeur)\\s*:' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*',
+			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
+		},
+		{
+			match:
+				// height
+				'(?:height|hauteur)\\s*:[^\(]*' +
+				'\\(\s*' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?' +
+				'\\)[^\(]*' +
+
+				// width
+				'(?:width|largeur)\\s*:[^\(]*' +
+				'\\(\s*' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?' +
+				'\\)[^\(]*' +
+
+				// length
+				'(?:length|depth|profondeur)\\s*:[^\(]*' +
+				'\\(\s*' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?' +
+				'\\)\s*',
+			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+		},
+		{
+			match:
+				// height
+				'(?:height|hauteur)\\s*:[^\(]*' +
+				'\\(\s*' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?' +
+				'\\)[^\(]*' +
+
+				// width
+				'(?:width|largeur)\\s*:[^\(]*' +
+				'\\(\s*' +
+				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?' +
+				'\\)',
+			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
+		},
+		{
 			match: 
-				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
+				'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
 				'\\s*(?:x|by)\\s*' + 
 				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 				'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
@@ -67,6 +140,10 @@ function parseRemainder (string) {
 	return parseEntity(string) || parseFraction(string);
 }
 
+function replaceDecimals (string) {
+	return string.replace(/,/g, '.');
+}
+
 module.exports = function (string, unitType) {
 	var match;
 
@@ -78,15 +155,15 @@ module.exports = function (string, unitType) {
 
 	if (match) {
 		if (match.width) {
-			match.width = parseFloat(match.width);
+			match.width = parseFloat(replaceDecimals(match.width));
 		}
 
 		if (match.height) {
-			match.height = parseFloat(match.height);
+			match.height = parseFloat(replaceDecimals(match.height));
 		}
 
 		if (match.length) {
-			match.length = parseFloat(match.length);
+			match.length = parseFloat(replaceDecimals(match.length));
 		}
 
 		if (match.width_remainder) {
@@ -103,10 +180,12 @@ module.exports = function (string, unitType) {
 
 		match.type = String(match.type).toLowerCase();
 
-		match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
-		match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
-		if (match.length) {
-			match.length = new Qty(match.length + ' ' + match.type).to(unitType).scalar;
+		if (match.type !== unitType) {
+			match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
+			match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
+			if (match.length) {
+				match.length = new Qty(match.length + ' ' + match.type).to(unitType).scalar;
+			}
 		}
 	}
 
