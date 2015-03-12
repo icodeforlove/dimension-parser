@@ -25,4 +25,10 @@ describe('General', function() {
 
 		expect(dimensionParser('12 x 39 1/4 x 39 1/4 in. (30.5 x 99.7 x 99.7 cm).', 'in')).toEqual({ width : '12.01', height : '39.25', length : '39.25' });
 	});
+
+	it('can match odd phrasing', function () {
+		expect(dimensionParser('171.5 by 141.5 cm (67.5 by 55.75 in.)', 'in')).toEqual({ width: '67.50', height: '55.75' });
+		expect(dimensionParser('171.5by141.5cm', 'in')).toEqual({ width : '67.52', height : '55.71' });
+		expect(dimensionParser('88.9 by 203.2 cm (35 by 80 in.) overall 177.8 by 203.2 cm (70 by 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });
+	});
 });

@@ -24,9 +24,9 @@ var entitiesMap = {
 		{
 			match: 
 				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
-				'\\s*x\\s*' + 
+				'\\s*(?:x|by)\\s*' + 
 				'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'(?:\\s*x\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
+				'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?',
 			props: ['width', 'width_remainder', 'height', 'height_remainder', 'length', 'length_remainder', 'type']
 		}
