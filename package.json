@@ -1,6 +1,6 @@
 {
   "name": "dimension-parser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "parse dimensions out of strings",
   "main": "index.js",
   "scripts": {

@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.4
+ * dimensionParser.js v0.0.5
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -194,7 +194,7 @@ var dimensionParser =
 		return string.replace(/,/g, '.');
 	}
 	
-	module.exports = function (string, unitType) {
+	function matchDimensions (string) {
 		var match;
 	
 		for (var i = 0; i < matches.length; i++) {
@@ -202,6 +202,12 @@ var dimensionParser =
 				break;
 			}
 		}
+	
+		return match;
+	}
+	
+	var Parser = function (string, unitType) {
+		var match = matchDimensions(string);
 	
 		if (match) {
 			if (match.width) {
@@ -254,6 +260,12 @@ var dimensionParser =
 			return null;
 		}
 	};
+	
+	Parser.hasDimensions = function (string) {
+		return !!matchDimensions(string);
+	};
+	
+	module.exports = Parser;
 
 /***/ },
 /* 1 */

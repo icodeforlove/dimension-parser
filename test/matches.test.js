@@ -41,4 +41,9 @@ describe('General', function() {
 		expect(dimensionParser('Hauteur : 70 cm Largeur : 49,5 cm Profondeur : 32,4 cm', 'in')).toEqual({ width : '27.56', height : '19.49' });
 		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '70.00', height : '49.50' });
 	});
+
+	it('can test if a string contains dimensions', function () {
+		expect(dimensionParser.hasDimensions('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.) Profondeur : 85 cm (33  1/2  in.)')).toEqual(true);
+		expect(dimensionParser.hasDimensions('foobar 9001 x')).toEqual(false);
+	});
 });

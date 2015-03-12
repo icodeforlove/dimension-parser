@@ -144,7 +144,7 @@ function replaceDecimals (string) {
 	return string.replace(/,/g, '.');
 }
 
-module.exports = function (string, unitType) {
+function matchDimensions (string) {
 	var match;
 
 	for (var i = 0; i < matches.length; i++) {
@@ -152,6 +152,12 @@ module.exports = function (string, unitType) {
 			break;
 		}
 	}
+
+	return match;
+}
+
+var Parser = function (string, unitType) {
+	var match = matchDimensions(string);
 
 	if (match) {
 		if (match.width) {
@@ -204,3 +210,9 @@ module.exports = function (string, unitType) {
 		return null;
 	}
 };
+
+Parser.hasDimensions = function (string) {
+	return !!matchDimensions(string);
+};
+
+module.exports = Parser;
