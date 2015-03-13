@@ -26,73 +26,42 @@ var entitiesMap = {
 				// height
 				'(?:height|hauteur)\\s*:' +
 				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?(?:\\s*\\([^\\)]+\\))?\\s*' +
 
 				// width
 				'(?:width|largeur)\\s*:' +
 				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
+				'\\s*(' + unitTypes.join('|') + ')\\.?(?:\\s*\\([^\\)]+\\))?\\s*' +
 
 				// length
-				'(?:length|depth|profondeur)\\s*:' +
+				'(?:(?:length|depth|profondeur)\\s*:' +
 				'\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?',
+				'\\s*(' + unitTypes.join('|') + ')\\.?(?:\\s*\\([^\\)]+\\))?)?',
 			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
 		},
-
 		{
 			match:
 				// height
-				'(?:height|hauteur)\\s*:' +
-				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*' +
-
-				// width
-				'(?:width|largeur)\\s*:' +
-				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?[^\:]*',
-			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
-		},
-		{
-			match:
-				// height
-				'(?:height|hauteur)\\s*:[^\(]*' +
-				'\\(\s*' +
+				'(?:height|hauteur)\\s*:[^\\(]*' +
+				'\\(\\s*' +
 				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?' +
-				'\\)[^\(]*' +
+				'\\)\\s*' +
 
 				// width
-				'(?:width|largeur)\\s*:[^\(]*' +
-				'\\(\s*' +
+				'(?:width|largeur)\\s*:[^\\(]*' +
+				'\\(\\s*' +
 				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?' +
-				'\\)[^\(]*' +
+				'\\)\\s*' +
 
 				// length
-				'(?:length|depth|profondeur)\\s*:[^\(]*' +
-				'\\(\s*' +
+				'(?:(?:length|depth|profondeur)\\s*:[^\\(]*' +
+				'\\(\\s*' +
 				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?' +
-				'\\)\s*',
+				'\\))?',
 			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
-		},
-		{
-			match:
-				// height
-				'(?:height|hauteur)\\s*:[^\(]*' +
-				'\\(\s*' +
-				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?' +
-				'\\)[^\(]*' +
-
-				// width
-				'(?:width|largeur)\\s*:[^\(]*' +
-				'\\(\s*' +
-				'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-				'\\s*(' + unitTypes.join('|') + ')\\.?' +
-				'\\)',
-			props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type']
 		},
 		{
 			match: 
