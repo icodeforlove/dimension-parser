@@ -5,7 +5,7 @@ describe('General', function() {
 		expect(dimensionParser('171.5 x 141.5 cm (67.5 x 55.75 in.)', 'in')).toEqual({ width: '67.50', height: '55.75' });
 		expect(dimensionParser('171.5x141.5cm', 'in')).toEqual({ width : '67.52', height : '55.71' });
 		expect(dimensionParser('88.9 x 203.2 cm (35 x 80 in.) overall 177.8 x 203.2 cm (70 x 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });
-
+		expect(dimensionParser('32 x 22,5 cm; 12 5/8 x 8,5 in.', 'in')).toEqual({ width : '12.63', height : '8.50' });
 		expect(dimensionParser('88.9 x 203.2 x 203.2 cm (35 x 80 in.) overall 177.8 x 203.2 x 203.2 cm (70 x 80 x 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00', length : '80.00' });
 	});
 

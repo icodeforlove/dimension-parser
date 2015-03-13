@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.6
+ * dimensionParser.js v0.0.7
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -117,8 +117,8 @@ var dimensionParser =
 				match: 
 					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
 					'\\s*(?:x|by)\\s*' + 
-					'([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-					'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
+					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
 					'\\s*(' + unitTypes.join('|') + ')\\.?',
 				props: ['width', 'width_remainder', 'height', 'height_remainder', 'length', 'length_remainder', 'type']
 			}
