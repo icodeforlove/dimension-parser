@@ -33,13 +33,14 @@ describe('General', function() {
 	});
 
 	it('can match named dimensions', function () {
-		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.) Profondeur : 85 cm (33  1/2  in.)', 'in')).toEqual({ width : '36.22', height : '79.92', length : '33.46' });
-		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.)', 'in')).toEqual({ width : '36.22', height : '79.92' });
-		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm Profondeur : 85 cm', 'in')).toEqual({ width : '36.22', height : '79.92', length : '33.46' });
-		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm', 'in')).toEqual({ width : '36.22', height : '79.92' });
-		expect(dimensionParser('Hauteur : (36  1/4  in.) Largeur : (80 in.)', 'in')).toEqual({ width : '36.25', height : '80.00' });
-		expect(dimensionParser('Hauteur : 70 cm Largeur : 49,5 cm Profondeur : 32,4 cm', 'in')).toEqual({ width : '27.56', height : '19.49' });
-		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '70.00', height : '49.50' });
+		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.) Profondeur : 85 cm (33  1/2  in.)', 'in')).toEqual({ width : '79.92', height : '36.22', length : '33.46' });
+		expect(dimensionParser('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.)', 'in')).toEqual({ width : '79.92', height : '36.22' });
+		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm Profondeur : 85 cm', 'in')).toEqual({ width : '79.92', height : '36.22', length : '33.46' });
+		expect(dimensionParser('Hauteur : 92 cm Largeur : 203 cm', 'in')).toEqual({ width : '79.92', height : '36.22' });
+		expect(dimensionParser('Hauteur : (36  1/4  in.) Largeur : (80 in.)', 'in')).toEqual({ width : '80.00', height : '36.25' });
+		expect(dimensionParser('Hauteur : 70 cm Largeur : 49,5 cm Profondeur : 32,4 cm', 'in')).toEqual({ width : '19.49', height : '27.56' });
+		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '49.50', height : '70.00' });
+		expect(dimensionParser('height: 516mm 20 1/4 in; depth: 70mm 2 3/4in; width: 515mm 20 1/4 in', 'in')).toEqual({ width : '20.25', height : '20.25', length : '2.75' });
 	});
 
 	it('can test if a string contains dimensions', function () {
