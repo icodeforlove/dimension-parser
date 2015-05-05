@@ -2,6 +2,11 @@ var dimensionParser = require('../index');
 
 describe('General', function() {
 	it('can match simple dimensions', function() {
+		expect(dimensionParser('Height 27 in.; Width 20 in. / Height 68.6 cm.; Width 50.8 cm.', 'in')).toEqual({width: '20.00', height: '27.01'});
+		expect(dimensionParser('Height 18.5 in.; Width 14.3 in. / Height 47 cm.; Width 36.2 cm.', 'in')).toEqual({width: '14.25', height: '18.50'});
+		expect(dimensionParser('495x340 mm; 19 1/2x13 3/8 inches', 'in')).toEqual({width: '19.50', height: '13.38'});
+		expect(dimensionParser('622x460 mm; 24 3/8x18 inches', 'in')).toEqual({width: '24.38', height: '18.00'});
+		expect(dimensionParser('640x500 mm; 25x19 1/2 inches', 'in')).toEqual({width : '25.00', height : '19.50'});
 		expect(dimensionParser('171.5 x 141.5 cm (67.5 x 55.75 in.)', 'in')).toEqual({ width: '67.50', height: '55.75' });
 		expect(dimensionParser('171.5x141.5cm', 'in')).toEqual({ width : '67.52', height : '55.71' });
 		expect(dimensionParser('88.9 x 203.2 cm (35 x 80 in.) overall 177.8 x 203.2 cm (70 x 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });

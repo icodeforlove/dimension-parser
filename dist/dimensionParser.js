@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.8
+ * dimensionParser.js v0.0.9
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -134,6 +134,19 @@ var dimensionParser =
 					'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
 					'\\s*(' + unitTypes.join('|') + ')\\.?',
 				props: ['width', 'width_remainder', 'height', 'height_remainder', 'length', 'length_remainder', 'type']
+			},
+			{
+				match:
+					// height
+					'height ' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?;\\s*' +
+	
+					// width
+					'width ' +
+					'\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?',
+				props: ['height', 'height_remainder', 'type', 'width', 'width_remainder', 'type']
 			}
 		];
 	
@@ -2104,18 +2117,37 @@ var dimensionParser =
 			this._context = object;
 		}
 	}
+	
+	function argumentsToArray (args) {
+		var result;
+		
+		if (args.length > 1) {
+			result = toArray(args);
+		} else if (Array.isArray(args[0])) {
+			result = args[0];
+		} else {
+			result = [args[0]];
+		}
+	
+		return result;
+	}
+	
 	Saw.prototype = {
 		match: function (match) {
-			var saw = new Saw(this._context);
+			var matchArray = argumentsToArray(arguments),
+				saw = new Saw(this._context),
+				context = this._contextToString(this._context);
 	
-			var context = this._contextToString(saw._context),
-				matches = context.match(match);
+			matchArray.some(function (match) {
+				var matches = context.match(match);
 	
-			if (!matches) {
-				saw._context = '';
-			} else {
-				saw._context = new Matches(matches, match);
-			}
+				if (!matches) {
+					saw._context = '';
+				} else {
+					saw._context = new Matches(matches, match);
+					return true;
+				}
+			});		
 	
 			return saw;
 		},
@@ -2183,25 +2215,71 @@ var dimensionParser =
 			return saw;
 		},
 	
-		map: function (func) {
+		each: function (func, thisArg) {
 			var saw = new Saw(this._context);
 	
 			// Note: adds array as a third param
 			var array = saw.toArray();
-			saw._context = array.map(function (item, index) {
-				return func(item, index, array);
+			array.forEach(function (item, index) {
+				if (item) {
+					func.bind(thisArg)(item, index, array);
+				}
 			});
 	
 			return saw;
 		},
 	
-		filter: function (func) {
+		map: function (func, thisArg) {
+			var saw = new Saw(this._context);
+	
+			// Note: adds array as a third param
+			var array = saw.toArray();
+			saw._context = array.map(function (item, index) {
+				return func.bind(thisArg)(item, index, array);
+			});
+	
+			return saw;
+		},
+	
+		reduce: function (func, thisArg) {
+			var saw = new Saw(this._context);
+	
+			// Note: adds array as a third param
+			var array = saw.toArray();
+			saw._context = String(array.reduce(function (previousValue, currentValue, index, array) {
+				return func.bind(thisArg)(previousValue, currentValue, index, array);
+			}));
+	
+			return saw;
+		},
+	
+		lowerCase: function (func) {
+			return this.mapStringMethodAgainstContext('toLowerCase', func);
+		},
+	
+		upperCase: function (func) {
+			return this.mapStringMethodAgainstContext('toUpperCase', func);
+		},
+	
+		mapStringMethodAgainstContext: function (methodName, func) {
+			var saw = new Saw(this._context);
+	
+			// Note: adds array as a third param
+			var array = saw.toArray();
+			saw._context = array.map(function (item, index) {
+				return item ? String(item)[methodName]() : item;
+			});
+	
+			return saw;
+		},
+	
+		filter: function (func, thisArg) {
 			var saw = new Saw(this._context);
 	
 			// Note: adds array as a third param
 			var array = saw.toArray();
 			saw._context = array.filter(function (item, index) {
-				return func(item, index, array);
+				return func.bind(thisArg)(item, index, array);
 			});
 	
 			return saw;
@@ -2233,7 +2311,7 @@ var dimensionParser =
 			var context = Array.isArray(saw._context) ? saw._context : saw.toArray(saw._context);
 	
 			saw._context = context.map(function (item) {
-				return item.trim();
+				return item ? item.trim() : item;
 			});
 	
 			return saw;
@@ -2272,7 +2350,31 @@ var dimensionParser =
 		},
 	
 		toNumber: function () {
-			return parseInt(this.toString(), 10);
+			var result = this.toFloat();
+			
+			return isNaN(result) ? 0 : result;
+		},
+	
+		toFloat: function () {
+			var string = this.toString(),
+				result = parseFloat(string, 10);
+	
+			if (isNaN(result) || string.length != String(result).length) {
+				return NaN;
+			} else {
+				return result;
+			}
+		},
+	
+		toInt: function () {
+			var string = this.toString(),
+				result = parseInt(string, 10);
+	
+			if (isNaN(result) || string.length != String(result).length) {
+				return NaN;
+			} else {
+				return result;
+			}
 		},
 	
 		toBoolean: function () {
@@ -2280,17 +2382,15 @@ var dimensionParser =
 		},
 	
 		toObject: function () {
-			var props = arguments.length === 1 && Array.isArray(arguments[0]) ? arguments[0] : Array.prototype.slice.call(arguments, 0),
+			var props = argumentsToArray(arguments),
 				array = this.toArray(),
 				object = {};
 	
-			if (props.length === array.length) {
-				array.forEach(function (value, index) {
-					if (typeof value !== 'undefined') {
-						object[props[index]] = value;
-					}
-				});
-			}
+			props.forEach(function (value, index) {
+				if (typeof value !== 'undefined' && typeof array[index] != 'undefined') {
+					object[value] = array[index] ;
+				}
+			});
 	
 			return object;
 		},
