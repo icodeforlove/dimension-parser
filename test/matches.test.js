@@ -35,6 +35,12 @@ describe('General', function() {
 		expect(dimensionParser('171.5 by 141.5 cm (67.5 by 55.75 in.)', 'in')).toEqual({ width: '67.50', height: '55.75' });
 		expect(dimensionParser('171.5by141.5cm', 'in')).toEqual({ width : '67.52', height : '55.71' });
 		expect(dimensionParser('88.9 by 203.2 cm (35 by 80 in.) overall 177.8 by 203.2 cm (70 by 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });
+		expect(dimensionParser('46.50 in. (118.10 cm.) (height)', 'in')).toEqual({height: '46.50'});
+		expect(dimensionParser('46.50 in. (118.10 cm.) (height)', 'in')).toEqual({height: '46.50'});
+		expect(dimensionParser('85.98 in. (218.40 cm.) (width)', 'in')).toEqual({width: '85.98'});
+		expect(dimensionParser('3.00 in. (7.62 cm.) (depth)', 'in')).toEqual({length: '3.00'});
+		expect(dimensionParser('46.50 in. (118.10 cm.) (height) by 85.98 in. (218.40 cm.) (width)', 'in')).toEqual({width: '85.98', height: '46.50'});
+		expect(dimensionParser('8.00 in. (20.32 cm.) (height) by 8.00 in. (20.32 cm.) (width) by 3.00 in. (7.62 cm.) (depth)', 'in')).toEqual({width: '8.00', height: '8.00', length: '3.00'});
 	});
 
 	it('can match named dimensions', function () {

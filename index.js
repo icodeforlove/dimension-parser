@@ -22,6 +22,12 @@ var entitiesMap = {
 	unitTypes = ['in', 'cm', 'mm', 'ft'],
 	matches = [
 		{
+			match:  '(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(height\\))?' +
+					'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(width\\))?' +
+					'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(depth\\))?',
+			props: ['height', 'type', 'width', 'type', 'length', 'type']
+		},
+		{
 			match:
 				// height
 				'(?:height|hauteur)\\s*:' +
@@ -103,6 +109,9 @@ var entitiesMap = {
 function matchObject(string, regExp, props) {
 	var match = saw(string)
 		.match(new RegExp(regExp, 'gi'))
+		.filter(function (item) {
+			return item;
+		})
 		.last()
 		.match(new RegExp(regExp, 'i'));
 
@@ -182,8 +191,14 @@ var Parser = function (string, unitType) {
 		match.type = String(match.type).toLowerCase();
 
 		if (match.type !== unitType) {
-			match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
-			match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
+			if (match.width) {
+				match.width = new Qty(match.width + ' ' + match.type).to(unitType).scalar;
+			}
+
+			if (match.height) {
+				match.height = new Qty(match.height + ' ' + match.type).to(unitType).scalar;
+			}
+
 			if (match.length) {
 				match.length = new Qty(match.length + ' ' + match.type).to(unitType).scalar;
 			}
@@ -191,10 +206,15 @@ var Parser = function (string, unitType) {
 	}
 
 	if (match) {
-		var result = {
-			width: match.width.toFixed(2),
-			height: match.height.toFixed(2)
-		};
+		var result = {};
+
+		if (match.width) {
+			result.width = match.width.toFixed(2);
+		}
+
+		if (match.height) {
+			result.height = match.height.toFixed(2);
+		}
 
 		if (match.length) {
 			result.length = match.length.toFixed(2);
