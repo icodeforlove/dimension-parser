@@ -28,4 +28,7 @@ dimensionParser('171.5 x 141.5 x 141.5 cm (67.5 x 55¾ x 55 3/4 in.)', 'in'); //
 // or you can test if a string contains dimensions
 
 dimensionParser.hasDimensions('foobar'); // returns false
+
+// you can also provide a format (the default is WxHxL)
+dimensionParser('171.5 x 141.5 x 141.5 cm (67.5 x 55¾ x 55 3/4 in.)', 'in', 'HxWxL'); // returns {height: "67.50", width: "55.75", length: "55.75"}
 ```

@@ -160,8 +160,10 @@ function matchDimensions (string) {
 	return match;
 }
 
-var Parser = function (string, unitType) {
+var Parser = function (string, unitType, format) {
 	var match = matchDimensions(string);
+
+	format = format || 'WxHxL';
 
 	if (match) {
 		if (match.width) {
@@ -208,16 +210,30 @@ var Parser = function (string, unitType) {
 	if (match) {
 		var result = {};
 
-		if (match.width) {
-			result.width = match.width.toFixed(2);
-		}
+		if (format === 'WxHxL') {
+			if (match.width) {
+				result.width = match.width.toFixed(2);
+			}
 
-		if (match.height) {
-			result.height = match.height.toFixed(2);
-		}
+			if (match.height) {
+				result.height = match.height.toFixed(2);
+			}
 
-		if (match.length) {
-			result.length = match.length.toFixed(2);
+			if (match.length) {
+				result.length = match.length.toFixed(2);
+			}
+		} else if (format === 'HxWxL') {
+			if (match.width) {
+				result.height = match.width.toFixed(2);
+			}
+
+			if (match.height) {
+				result.width = match.height.toFixed(2);
+			}
+
+			if (match.length) {
+				result.length = match.length.toFixed(2);
+			}
 		}
 
 		return result;

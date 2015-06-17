@@ -24,6 +24,16 @@ describe('General', function() {
 		expect(dimensionParser('200.2 x 255.3 x 255.3 cm (78 7/8 x 100 1/2 x 100 1/2 in.)', 'in')).toEqual({ width : '78.88', height : '100.50', length : '100.50' });
 	});
 
+	it('can support HxWxL format', function () {
+		expect(dimensionParser('171.5 x 141.5 cm (67 1/2 x 55 3/4 in.)', 'in', 'HxWxL')).toEqual({ height: '67.50', width: '55.75' });
+		expect(dimensionParser('(67 1/2 x 55 3/4 in.)', 'cm', 'HxWxL')).toEqual({ height : '171.45', width : '141.60' });
+		expect(dimensionParser('155 x 109.2 cm (61 x 42 7/8 in.)', 'in', 'HxWxL')).toEqual({ height : '61.00', width : '42.88' });
+		expect(dimensionParser('107 x 150 cm (42 1/8 x 59 in.)', 'in', 'HxWxL')).toEqual({ height : '42.13', width : '59.00' });
+		expect(dimensionParser('200.2 x 255.3 cm (78 7/8 x 100 1/2 in.)', 'in', 'HxWxL')).toEqual({ height : '78.88', width : '100.50' });
+
+		expect(dimensionParser('200.2 x 255.3 x 255.3 cm (78 7/8 x 100 1/2 x 100 1/2 in.)', 'in', 'HxWxL')).toEqual({ height : '78.88', width : '100.50', length : '100.50' });
+	});
+
 	it('can match entity fractions', function () {
 		expect(dimensionParser('18¾ x 15 1/8 in. (47.6 x 38¾ cm.) ', 'in')).toEqual({ width : '18.74', height : '15.26' });
 		expect(dimensionParser('18 ¾ x 15 1/8 in. (47.6 x 38 ¾ cm.)', 'in')).toEqual({ width : '18.74', height : '15.26' });
