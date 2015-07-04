@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.11
+ * dimensionParser.js v0.0.12
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -69,7 +69,7 @@ var dimensionParser =
 			'⅚': 5/6
 		},
 		entitiesArray = Object.keys(entitiesMap),
-		unitTypes = ['in', 'cm', 'mm', 'ft'],
+		unitTypes = ['in', 'cm', 'mm', 'ft', '"'],
 		matches = [
 			{
 				match:  '(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(height\\))?' +
@@ -135,11 +135,11 @@ var dimensionParser =
 			{
 				match: 
 					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
-					'\\s*(?:x|by)\\s*' + 
+					'\\s*(' + unitTypes.join('|') + ')?\\s*(?:x|by)\\s*' + 
 					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
-					'(?:\\s*(?:x|by)\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
+					'(?:\\s*(' + unitTypes.join('|') + ')?\\s*(?:x|by)\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
 					'\\s*(' + unitTypes.join('|') + ')\\.?',
-				props: ['width', 'width_remainder', 'height', 'height_remainder', 'length', 'length_remainder', 'type']
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
 			},
 			{
 				match:
@@ -241,6 +241,11 @@ var dimensionParser =
 			}
 	
 			match.type = String(match.type).toLowerCase();
+			
+			// remap shorthand
+			if (match.type === '"') {
+				match.type = 'in';
+			}
 	
 			if (match.type !== unitType) {
 				if (match.width) {

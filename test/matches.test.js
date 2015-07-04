@@ -12,6 +12,10 @@ describe('General', function() {
 		expect(dimensionParser('88.9 x 203.2 cm (35 x 80 in.) overall 177.8 x 203.2 cm (70 x 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00' });
 		expect(dimensionParser('32 x 22,5 cm; 12 5/8 x 8,5 in.', 'in')).toEqual({ width : '12.63', height : '8.50' });
 		expect(dimensionParser('88.9 x 203.2 x 203.2 cm (35 x 80 in.) overall 177.8 x 203.2 x 203.2 cm (70 x 80 x 80 in.)', 'in')).toEqual({ width : '70.00', height : '80.00', length : '80.00' });
+		expect(dimensionParser('12"x10"', 'in')).toEqual({ width : '12.00', height : '10.00' });
+		expect(dimensionParser('12"x10"', 'in')).toEqual({ width : '12.00', height : '10.00' });
+		expect(dimensionParser('12 " x10"', 'in')).toEqual({ width : '12.00', height : '10.00' });
+		expect(dimensionParser('12 " x10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
 	});
 
 	it('can match basic fractions', function () {
