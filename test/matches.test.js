@@ -16,6 +16,8 @@ describe('General', function() {
 		expect(dimensionParser('12"x10"', 'in')).toEqual({ width : '12.00', height : '10.00' });
 		expect(dimensionParser('12 " x10"', 'in')).toEqual({ width : '12.00', height : '10.00' });
 		expect(dimensionParser('12 " x10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
+		expect(dimensionParser('12 " ×10"×30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
+		expect(dimensionParser('12 " ×10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
 	});
 
 	it('can match basic fractions', function () {
