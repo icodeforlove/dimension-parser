@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.13
+ * dimensionParser.js v0.0.14
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -72,12 +72,14 @@ var dimensionParser =
 		unitTypes = ['in', 'cm', 'mm', 'ft', '"'],
 		matches = [
 			{
+				strict: true,
 				match:  '(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(height\\))?' +
 						'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(width\\))?' +
 						'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(depth\\))?',
 				props: ['height', 'type', 'width', 'type', 'length', 'type']
 			},
 			{
+				strict: true,
 				match:
 					// height
 					'(?:height|hauteur)\\s*:' +
@@ -96,6 +98,7 @@ var dimensionParser =
 				props: ['height', 'height_remainder', 'type', 'width', 'width_remainder', 'type', 'length', 'length_remainder', 'type']
 			},
 			{
+				strict: true,
 				match:
 					// height
 					'(?:height|hauteur)\\s*:[^\\(]*' +
@@ -120,6 +123,7 @@ var dimensionParser =
 				props: ['height', 'height_remainder', 'type', 'width', 'width_remainder', 'type', 'length', 'length_remainder', 'type']
 			},
 			{
+				strict: true,
 				match: 
 					// height
 					'(?:height|hauteur):\\s*(?:[0-9][0-9\\.,]*)(?:\\s*(?:[0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?(?:' + unitTypes.join('|') + ')?\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?\\s*(' + unitTypes.join('|') + ');\\s*' +
@@ -133,6 +137,7 @@ var dimensionParser =
 				props: ['height', 'height_remainder', 'type', 'length', 'length_remainder', 'type', 'width', 'width_remainder', 'type']
 			},
 			{
+				strict: false,
 				match: 
 					'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
 					'\\s*(' + unitTypes.join('|') + ')?\\s*(?:x|×|by)\\s*' + 
@@ -142,6 +147,17 @@ var dimensionParser =
 				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
 			},
 			{
+				strict: true,
+				match: 
+					'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' + 
+					'\\s*(' + unitTypes.join('|') + ')?\\s*(?:x|×|by)\\s*' + 
+					'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
+					'(?:\\s*(' + unitTypes.join('|') + ')?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?)?' +
+					'\\s*(' + unitTypes.join('|') + ')\\.?',
+				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+			},
+			{
+				strict: true,
 				match:
 					// height
 					'height ' +
@@ -198,10 +214,12 @@ var dimensionParser =
 		return string.replace(/,/g, '.');
 	}
 	
-	function matchDimensions (string) {
+	function matchDimensions (string, strict) {
 		var match;
 	
 		for (var i = 0; i < matches.length; i++) {
+	
+			if (strict && !matches[i].strict) continue;
 			if ((match = matchObject(string, matches[i].match, matches[i].props))) {
 				break;
 			}
@@ -210,8 +228,8 @@ var dimensionParser =
 		return match;
 	}
 	
-	var Parser = function (string, unitType, format) {
-		var match = matchDimensions(string);
+	var Parser = function (string, unitType, format, strict) {
+		var match = matchDimensions(string, strict);
 	
 		format = format || 'WxHxL';
 	

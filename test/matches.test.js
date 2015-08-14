@@ -18,6 +18,8 @@ describe('General', function() {
 		expect(dimensionParser('12 " x10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
 		expect(dimensionParser('12 " ×10"×30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
 		expect(dimensionParser('12 " ×10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
+		expect(dimensionParser('(1)832, 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
+		expect(dimensionParser('832 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
 	});
 
 	it('can match basic fractions', function () {
