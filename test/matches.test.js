@@ -20,6 +20,7 @@ describe('General', function() {
 		expect(dimensionParser('12 " ×10"x30"', 'in')).toEqual({ width : '12.00', height : '10.00', length: '30.00' });
 		expect(dimensionParser('(1)832, 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
 		expect(dimensionParser('832 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
+		expect(dimensionParser('26.5 cm. x 17.1 cm.', 'in')).toEqual({ width: '10.43', height: '6.73' });
 	});
 
 	it('can match basic fractions', function () {
