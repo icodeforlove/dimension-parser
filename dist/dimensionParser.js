@@ -1,5 +1,5 @@
 /**
- * dimensionParser.js v0.0.14
+ * dimensionParser.js v0.0.16
  */
 var dimensionParser =
 /******/ (function(modules) { // webpackBootstrap
@@ -155,6 +155,17 @@ var dimensionParser =
 					'(?:\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?)?' +
 					'\\s*(' + unitTypes.join('|') + ')\\.?',
 				props: ['width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder', 'type']
+			},
+			// units first
+			{
+				strict: true,
+				match: 
+					'(' + unitTypes.join('|') + ')\\.?\\s*' +
+					'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' + 
+					'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' + 
+					'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
+					'(?:\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?)?',
+				props: ['type', 'width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder']
 			},
 			{
 				strict: true,

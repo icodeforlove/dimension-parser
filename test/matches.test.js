@@ -21,6 +21,10 @@ describe('General', function() {
 		expect(dimensionParser('(1)832, 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
 		expect(dimensionParser('832 25 x 19,5 in', null, null, true)).toEqual({ width : '25.00', height : '19.50' });
 		expect(dimensionParser('26.5 cm. x 17.1 cm.', 'in')).toEqual({ width: '10.43', height: '6.73' });
+		expect(dimensionParser('in 17.5x17.5', 'in')).toEqual({ width : '17.50', height : '17.50' });
+		expect(dimensionParser('cm 17,5x17,5', 'in')).toEqual({ width : '6.89', height : '6.89' });
+		expect(dimensionParser('cm 17,5x17,5x12,22', 'in')).toEqual({ width : '6.89', height : '6.89', length : '4.81' });
+		
 	});
 
 	it('can match basic fractions', function () {
