@@ -24,7 +24,7 @@ describe('General', function() {
 		expect(dimensionParser('in 17.5x17.5', 'in')).toEqual({ width : '17.50', height : '17.50' });
 		expect(dimensionParser('cm 17,5x17,5', 'in')).toEqual({ width : '6.89', height : '6.89' });
 		expect(dimensionParser('cm 17,5x17,5x12,22', 'in')).toEqual({ width : '6.89', height : '6.89', length : '4.81' });
-		
+
 	});
 
 	it('can match basic fractions', function () {
@@ -45,6 +45,8 @@ describe('General', function() {
 		expect(dimensionParser('200.2 x 255.3 cm (78 7/8 x 100 1/2 in.)', 'in', 'HxWxL')).toEqual({ height : '78.88', width : '100.50' });
 
 		expect(dimensionParser('200.2 x 255.3 x 255.3 cm (78 7/8 x 100 1/2 x 100 1/2 in.)', 'in', 'HxWxL')).toEqual({ height : '78.88', width : '100.50', length : '100.50' });
+
+		expect(dimensionParser('5 x 2.75 x 7 in.', 'in', 'WxLxH')).toEqual({ height : '7.00', width : '5.00', length: '2.75' });
 	});
 
 	it('can match entity fractions', function () {

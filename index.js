@@ -74,7 +74,7 @@ var entitiesMap = {
 		},
 		{
 			strict: true,
-			match: 
+			match:
 				// height
 				'(?:height|hauteur):\\s*(?:[0-9][0-9\\.,]*)(?:\\s*(?:[0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?(?:' + unitTypes.join('|') + ')?\\.?\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?\\s*(' + unitTypes.join('|') + ');\\s*' +
 
@@ -83,14 +83,14 @@ var entitiesMap = {
 
 				// width
 				'(?:width|largeur):\\s*(?:[0-9][0-9\\.,]*)(?:\\s*(?:[0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?(?:' + unitTypes.join('|') + ')?\\.?\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?\\s*(' + unitTypes.join('|') + ')',
-			
+
 			props: ['height', 'height_remainder', 'type', 'length', 'length_remainder', 'type', 'width', 'width_remainder', 'type']
 		},
 		{
 			strict: false,
-			match: 
-				'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' + 
-				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' + 
+			match:
+				'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' +
 				'([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?' +
 				'(?:\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*([0-9][0-9\\/]*|' + entitiesArray.join('|') + '))?)?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?\\.?',
@@ -98,9 +98,9 @@ var entitiesMap = {
 		},
 		{
 			strict: true,
-			match: 
-				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' + 
-				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' + 
+			match:
+				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' +
 				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
 				'(?:\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?)?' +
 				'\\s*(' + unitTypes.join('|') + ')\\.?',
@@ -109,10 +109,10 @@ var entitiesMap = {
 		// units first
 		{
 			strict: true,
-			match: 
+			match:
 				'(' + unitTypes.join('|') + ')\\.?\\s*' +
-				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' + 
-				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' + 
+				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
+				'\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*' +
 				'([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?' +
 				'(?:\\s*(' + unitTypes.join('|') + ')?\\.?\\s*(?:x|×|by)\\s*([0-9][0-9\\.,]*)(?:\\s*(' + entitiesArray.join('|') + '))?)?',
 			props: ['type', 'width', 'width_remainder', 'type', 'height', 'height_remainder', 'type', 'length', 'length_remainder']
@@ -151,7 +151,7 @@ function matchObject(string, regExp, props) {
 
 function parseFraction(string) {
 	var fraction = saw(string).match(/(\d+)\/(\d+)/).toObject('numerator', 'denominator');
-	
+
 	if (fraction.numerator && fraction.denominator) {
 		return fraction.numerator/fraction.denominator;
 	} else {
@@ -220,7 +220,7 @@ var Parser = function (string, unitType, format, strict) {
 		}
 
 		match.type = String(match.type).toLowerCase();
-		
+
 		// remap shorthand
 		if (match.type === '"') {
 			match.type = 'in';
@@ -268,7 +268,19 @@ var Parser = function (string, unitType, format, strict) {
 			if (match.length) {
 				result.length = match.length.toFixed(2);
 			}
-		}
+        } else if (format === 'WxLxH') {
+            if (match.width) {
+                result.width = match.width.toFixed(2);
+            }
+
+            if (match.height) {
+                result.length = match.height.toFixed(2);
+            }
+
+            if (match.length) {
+                result.height = match.length.toFixed(2);
+            }
+        }
 
 		return result;
 	} else {
