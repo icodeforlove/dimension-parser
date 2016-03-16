@@ -23,8 +23,9 @@ var entitiesMap = {
 	matches = [
 		{
 			strict: true,
-			match: 'h\\: ([0-9][0-9\\.,]*) w\\: ([0-9][0-9\\.,]*) (' + unitTypes.join('|') + ')',
-			props: ['height', 'width', 'type']
+			// h: 29,20 w: 26,30 d: 60 cm
+			match: 'h\\:\\s+([0-9][0-9\\.,]*)\\s+w\\:\\s+([0-9][0-9\\.,]*)\\s+(?:d\\:\\s+([0-9][0-9\\.,]*)\\s+)?(' + unitTypes.join('|') + ')',
+			props: ['height', 'width', 'length', 'type']
 		},
 		{
 			strict: true,

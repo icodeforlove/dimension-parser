@@ -3,6 +3,7 @@ var dimensionParser = require('../index');
 describe('General', function() {
 	it('can match simple dimensions', function() {
 		expect(dimensionParser('h: 29,20 w: 26,30 cm', 'in')).toEqual({width: '10.35', height: '11.50'});
+		expect(dimensionParser('h: 29,20 w: 26,30 d: 60,1 cm', 'in')).toEqual({width : '10.35', height : '11.50', length : '23.66'});
 		expect(dimensionParser('Height 27 in.; Width 20 in. / Height 68.6 cm.; Width 50.8 cm.', 'in')).toEqual({width: '20.00', height: '27.01'});
 		expect(dimensionParser('Height 18.5 in.; Width 14.3 in. / Height 47 cm.; Width 36.2 cm.', 'in')).toEqual({width: '14.25', height: '18.50'});
 		expect(dimensionParser('495x340 mm; 19 1/2x13 3/8 inches', 'in')).toEqual({width: '19.50', height: '13.38'});
