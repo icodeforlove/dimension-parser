@@ -23,6 +23,11 @@ var entitiesMap = {
 	matches = [
 		{
 			strict: true,
+			match: 'h\\: ([0-9][0-9\\.,]*) w\\: ([0-9][0-9\\.,]*) (' + unitTypes.join('|') + ')',
+			props: ['height', 'width', 'type']
+		},
+		{
+			strict: true,
 			match:  '(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.?\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(height\\))?' +
 					'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.?\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(width\\))?' +
 					'(?:(?:\\s*by\\s*)?([0-9][0-9\\.,]*)\\s+(' + unitTypes.join('|') + ')\\.?\\s*\\([0-9][0-9\\.,]* (?:' + unitTypes.join('|') + ')\\.\\)\\s*\\(depth\\))?',
