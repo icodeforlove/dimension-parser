@@ -78,6 +78,7 @@ describe('General', function() {
 		expect(dimensionParser('Hauteur : 70 cm Largeur : 49,5 cm Profondeur : 32,4 cm', 'in')).toEqual({ width : '19.49', height : '27.56' });
 		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '49.50', height : '70.00' });
 		expect(dimensionParser('height: 516mm 20 1/4 in; depth: 70mm 2 3/4in; width: 515mm 20 1/4 in', 'in')).toEqual({ width : '20.25', height : '20.25', length : '2.75' });
+		expect(dimensionParser('Height 36.6 in.; Width 22 in.; Depth 11.4 in.', 'in')).toEqual({width : '22.00', height : '36.60', length : '11.40'});
 	});
 
 	it('can test if a string contains dimensions', function () {
