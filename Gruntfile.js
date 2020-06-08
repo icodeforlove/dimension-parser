@@ -41,23 +41,6 @@ module.exports = function(grunt) {
 				jshintrc: true
 			},
 			all: ['./*.js', './test/*.js']
-		},
-
-		jasmine_node: {
-			options: {
-				forceExit: true,
-				match: '.',
-				matchall: false,
-				extensions: 'js',
-				specNameMatcher: 'test'
-			},
-			all: ['test/']
-		},
-		watch: {
-			jasmine: {
-				files: ['test/*.js'],
-				tasks: ['test']
-			}
 		}
 	});
 
@@ -65,9 +48,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-banner');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-jasmine-node');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'usebanner']);
-	grunt.registerTask('test', ['jshint', 'jasmine_node']);
+	grunt.registerTask('build', ['webpack', 'uglify', 'usebanner']);
 };

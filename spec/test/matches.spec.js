@@ -1,4 +1,4 @@
-var dimensionParser = require('../index');
+var dimensionParser = require('../../index');
 
 describe('General', function() {
 	it('can match simple dimensions', function() {
@@ -25,7 +25,8 @@ describe('General', function() {
 		expect(dimensionParser('26.5 cm. x 17.1 cm.', 'in')).toEqual({ width: '10.43', height: '6.73' });
 		expect(dimensionParser('in 17.5x17.5', 'in')).toEqual({ width : '17.50', height : '17.50' });
 		expect(dimensionParser('cm 17,5x17,5', 'in')).toEqual({ width : '6.89', height : '6.89' });
-		expect(dimensionParser('cm 17,5x17,5x12,22', 'in')).toEqual({ width : '6.89', height : '6.89', length : '4.81' });
+        expect(dimensionParser('cm 17,5x17,5x12,22', 'in')).toEqual({ width : '6.89', height : '6.89', length : '4.81' });
+        expect(dimensionParser('11/0 x 7.0 x 5.5mm', 'in')).toEqual({ width: '0.43', height: '0.28', length: '0.22' });
 	});
 
 	it('can match basic fractions', function () {
@@ -79,7 +80,7 @@ describe('General', function() {
 		expect(dimensionParser('Hauteur : 70 in Largeur : 49,5 in Profondeur : 32,4 in', 'in')).toEqual({ width : '49.50', height : '70.00' });
 		expect(dimensionParser('height: 516mm 20 1/4 in; depth: 70mm 2 3/4in; width: 515mm 20 1/4 in', 'in')).toEqual({ width : '20.25', height : '20.25', length : '2.75' });
 		expect(dimensionParser('Height 36.6 in.; Width 22 in.; Depth 11.4 in.', 'in')).toEqual({width : '22.00', height : '36.60', length : '11.40'});
-	});
+    });
 
 	it('can test if a string contains dimensions', function () {
 		expect(dimensionParser.hasDimensions('Hauteur : 92 cm (36  1/4  in.) Largeur : 203 cm (80 in.) Profondeur : 85 cm (33  1/2  in.)')).toEqual(true);

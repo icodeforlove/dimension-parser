@@ -216,7 +216,7 @@ function matchDimensions (string, strict) {
 }
 
 var Parser = function (string, unitType, format, strict) {
-	var match = matchDimensions(string, strict);
+	var match = matchDimensions(saw(string).remove(/\/00?/g).toString(), strict);
 
 	format = format || 'WxHxL';
 
